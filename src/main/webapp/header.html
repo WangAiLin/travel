@@ -24,8 +24,15 @@
             $("#category").html(lis);
         });
 
+        $("#search-button").click(function () {
+            var rname = $("#search_input").val();
+            var cid = getParameter("cid");
+            location.href="http://localhost:8088/travel/route_list.html?cid="+cid+"&rname="+rname;
+        });
+
     });
 </script>
+<script src="js/getParameter.js"></script>
     <header id="header">
         <div class="top_banner">
             <img src="images/top_banner.jpg" alt="">
@@ -50,8 +57,8 @@
                     <a href="/"><img src="images/logo.jpg" alt=""></a>
                 </div>
                 <div class="search">
-                    <input name="" type="text" placeholder="请输入路线名称" class="search_input" autocomplete="off">
-                    <a href="javascript:;" class="search-button">搜索</a>
+                    <input name="" id="search_input" type="text" placeholder="请输入路线名称" class="search_input" autocomplete="off">
+                    <a href="javascript:;" id="search-button" class="search-button">搜索</a>
                 </div>
                 <div class="hottel">
                     <div class="hot_pic">
