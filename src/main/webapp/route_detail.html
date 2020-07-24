@@ -68,10 +68,10 @@
                 <div class="pros_price">
                     <p class="price"><strong id="price">¥2699.00</strong><span>起</span></p>
                     <p class="collect">
-                        <a class="btn"><i class="glyphicon glyphicon-heart-empty"></i>点击收藏</a>
+                        <a class="btn" id="favorite" onclick="addFavorite();"><i class="glyphicon glyphicon-heart-empty"></i>点击收藏</a>
 
-                        <a  class="btn already" disabled="disabled"><i class="glyphicon glyphicon-heart-empty"></i>点击收藏</a>
-                        <span>已收藏100次</span>
+                        <!--<a  class="btn already" disabled="disabled"><i class="glyphicon glyphicon-heart-empty"></i>点击收藏</a>-->
+                        <span id="favoriteCount">已收藏100次</span>
                     </p>
                 </div>        
             </div>
@@ -218,6 +218,7 @@
             $("#sname").html(route.seller.sname);
             $("#consphone").html(route.seller.consphone);
             $("#address").html(route.seller.address);
+            $("#favoriteCount").html("已收藏"+route.count+"次")
 
             var ddstr = '<a class="up_img up_img_disable"></a>';
 
@@ -244,6 +245,41 @@
             goImg();
         });
     });
+    
+    $(function () {
+        //发送请求，判断用户是否收藏过该路线
+        var rid = getParameter("rid");
+        $.get("route/isFavorite",{rid:rid},function(flag){
+            if(flag){
+                $("#favorite").addClass("already");
+                $("#favorite").attr("disabled","disabled");
+
+                //删除按钮的点击事件
+                $("#favorite").removeAttr("onclick");
+
+            }else{
+
+            }
+        });
+    });
+
+    //点击收藏按钮触发的方法
+    function addFavorite(){
+        var rid =getParameter("rid");
+        $.get("user/findOne",{},function (user) {
+            if(user){
+                //用户登录了
+                //添加入收藏
+                $.get("route/addFavorite",{rid:rid},function () {
+                    //重新加载页面刷新
+                    location.reload();
+                });
+            }else{
+                alert("请您登录后进行收藏！");
+                location.href="http://localhost:8088/travel/login.html";
+            }
+        });
+    }
     </script>
 </body>
 
